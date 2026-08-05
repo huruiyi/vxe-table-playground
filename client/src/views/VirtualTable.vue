@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { RadioGroup, Switch, Tag } from 'antdv-next'
+import { RadioGroup, Tag } from 'antdv-next'
+import ToolbarSwitch from '@/components/ToolbarSwitch.vue'
 import type { VxeTablePropTypes } from 'vxe-table'
 import { fetchBigData, type BigRow } from '@/api/bigdata'
 import { useAppStore } from '@/stores/app'
@@ -67,10 +68,7 @@ onMounted(loadData)
     <div class="page-card fill-card">
       <div class="demo-toolbar">
         <RadioGroup v-model:value="rowCount" :options="rowOptions" option-type="button" />
-        <label class="wide-switch">
-          <Switch v-model:checked="wideMode" size="small" />
-          100 列宽表
-        </label>
+        <ToolbarSwitch v-model="wideMode" label="100 列宽表" />
         <div class="toolbar-metrics">
           <span class="metric">
             数据行数<b>{{ tableData.length.toLocaleString() }}</b>
@@ -140,15 +138,6 @@ onMounted(loadData)
 </template>
 
 <style scoped>
-.wide-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 8px;
-  cursor: pointer;
-  user-select: none;
-}
-
 /* 指标信息:靠右、弱化,不抢表格视觉焦点(用 vxe 主题变量,暗色模式自动适配) */
 .toolbar-metrics {
   margin-left: auto;

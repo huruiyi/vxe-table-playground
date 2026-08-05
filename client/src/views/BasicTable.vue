@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Space, Switch, Tag, Progress } from 'antdv-next'
+import { Tag, Progress } from 'antdv-next'
+import ToolbarSwitch from '@/components/ToolbarSwitch.vue'
 import type { VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useAppStore } from '@/stores/app'
@@ -57,12 +58,10 @@ onMounted(loadData)
   <div class="page-fill">
     <div class="page-card fill-card">
       <div class="demo-toolbar">
-        <Space :size="16">
-          <span>边框 <Switch v-model:checked="showBorder" size="small" /></span>
-          <span>斑马纹 <Switch v-model:checked="showStripe" size="small" /></span>
-          <span>单元格合并 <Switch v-model:checked="enableMerge" size="small" /></span>
-          <span>空数据 <Switch v-model:checked="showEmpty" size="small" /></span>
-        </Space>
+        <ToolbarSwitch v-model="showBorder" label="边框" />
+        <ToolbarSwitch v-model="showStripe" label="斑马纹" />
+        <ToolbarSwitch v-model="enableMerge" label="单元格合并" />
+        <ToolbarSwitch v-model="showEmpty" label="空数据" />
       </div>
       <div class="table-wrap">
       <vxe-table

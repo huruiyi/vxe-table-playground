@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Switch } from 'antdv-next'
+import ToolbarSwitch from '@/components/ToolbarSwitch.vue'
 import type { VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useAppStore } from '@/stores/app'
@@ -79,8 +79,8 @@ onMounted(loadData)
   <div class="page-fill">
     <div class="page-card fill-card">
       <div class="demo-toolbar">
-        <span>岗位列合并 <Switch v-model:checked="enableMerge" size="small" /></span>
-        <span>条件样式 <Switch v-model:checked="enableHighlight" size="small" /></span>
+        <ToolbarSwitch v-model="enableMerge" label="岗位列合并" />
+        <ToolbarSwitch v-model="enableHighlight" label="条件样式" />
       </div>
       <div class="table-wrap">
       <vxe-table

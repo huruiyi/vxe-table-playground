@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Switch, message } from 'antdv-next'
+import { message } from 'antdv-next'
+import ToolbarSwitch from '@/components/ToolbarSwitch.vue'
 import type { VxeTableEvents, VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useAppStore } from '@/stores/app'
@@ -54,8 +55,8 @@ onMounted(loadData)
   <div class="page-fill">
     <div class="page-card fill-card">
       <div class="demo-toolbar">
-        <span>行拖拽 <Switch v-model:checked="rowDragEnabled" size="small" /></span>
-        <span>列拖拽 <Switch v-model:checked="colDragEnabled" size="small" /></span>
+        <ToolbarSwitch v-model="rowDragEnabled" label="行拖拽" />
+        <ToolbarSwitch v-model="colDragEnabled" label="列拖拽" />
       </div>
       <div class="table-wrap">
       <vxe-table

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { Button, Space, Switch, Descriptions, DescriptionsItem, Tag } from 'antdv-next'
+import { Button, Space, Descriptions, DescriptionsItem, Tag } from 'antdv-next'
+import ToolbarSwitch from '@/components/ToolbarSwitch.vue'
 import type { VxeTableInstance, VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useAppStore } from '@/stores/app'
@@ -47,7 +48,7 @@ onMounted(loadData)
           <Button @click="expandAll" :disabled="accordion">展开全部</Button>
           <Button @click="collapseAll">收起全部</Button>
         </Space>
-        <span>手风琴模式 <Switch v-model:checked="accordion" size="small" /></span>
+        <ToolbarSwitch v-model="accordion" label="手风琴模式" />
       </div>
       <div class="table-wrap">
       <vxe-table
