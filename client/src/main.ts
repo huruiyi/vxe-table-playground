@@ -11,6 +11,7 @@ import Antdv from 'antdv-next'
 import App from './App.vue'
 import router from '@/router'
 import { setupVxe } from '@/plugins/vxe'
+import { useAppStore } from '@/stores/app'
 
 const app = createApp(App)
 
@@ -18,5 +19,8 @@ app.use(createPinia())
 app.use(router)
 app.use(Antdv)
 setupVxe(app)
+
+// 恢复上次的表格尺寸 / 暗色 / 字体
+useAppStore().init()
 
 app.mount('#app')

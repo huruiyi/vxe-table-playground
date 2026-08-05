@@ -12,7 +12,9 @@ const themeConfig = computed(() => ({
   token: {
     colorPrimary: '#1677ff',
     borderRadius: 8,
-    colorBgLayout: appStore.dark ? '#0d0d0f' : '#f4f6fa'
+    colorBgLayout: appStore.dark ? '#0d0d0f' : '#f4f6fa',
+    // antd 组件的字体由 token 决定,不跟随 body,得在这里同步一份
+    fontFamily: appStore.fontStack
   }
 }))
 </script>

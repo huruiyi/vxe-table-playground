@@ -6,6 +6,25 @@ body,
   padding: 0;
 }
 
+/* ── 字体:--demo-font-family 由顶栏的字体设置动态改写(app store) ── */
+:root {
+  --demo-font-family: system-ui, -apple-system, 'Segoe UI Variable Text', 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+  /* vxe 自己在 :root 定义了这个变量,本文件后引入所以能覆盖 */
+  --vxe-ui-font-family: var(--demo-font-family);
+}
+
+body {
+  font-family: var(--demo-font-family);
+}
+
+/* 表格数字列等宽对齐:薪资/年龄这类右对齐数字不再参差 */
+.vxe-table .vxe-body--column,
+.vxe-table .vxe-footer--column {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
 /* ── 设计变量:亮色为默认,暗色由 VxeUI.setTheme('dark') 打的属性覆盖 ── */
 :root {
   --demo-bg-layout: #f4f6fa;
@@ -78,6 +97,72 @@ html[data-vxe-ui-theme='dark'] {
 .table-wrap {
   flex: 1;
   min-height: 0;
+}
+
+/* ── 表格配色:覆盖 vxe 主题变量 ──
+   vxe 把颜色变量定义在 [data-vxe-ui-theme=light/dark] 上,
+   本文件在 vxe 样式之后引入,同优先级后写覆盖(暗色再加 html 提升特异性)。 */
+:root,
+html[data-vxe-ui-theme='light'] {
+  /* 分隔线:主色系淡蓝,内线浅、外框深一档 */
+  --vxe-ui-table-border-width: 1px;
+  --vxe-ui-table-border-color: #dbe9fb;
+  --demo-table-border-outer: #b9d5f7;
+
+  /* 表头 / 表尾:跟着带一点蓝底,和蓝线同一色系 */
+  --vxe-ui-table-header-background-color: #f2f7fe;
+  --vxe-ui-table-header-font-color: rgba(0, 0, 0, 0.85);
+  --vxe-ui-table-footer-background-color: #f2f7fe;
+  --vxe-ui-table-footer-font-color: rgba(0, 0, 0, 0.85);
+
+  /* 行状态:hover / 当前行主色微染,斑马纹压到几乎无感 */
+  --vxe-ui-table-row-striped-background-color: #fafcff;
+  --vxe-ui-table-row-hover-background-color: #f1f6ff;
+  --vxe-ui-table-row-hover-striped-background-color: #f1f6ff;
+  --vxe-ui-table-row-current-background-color: #e8f2ff;
+  --vxe-ui-table-row-hover-current-background-color: #ddebff;
+
+  /* 列宽拖拽线 */
+  --vxe-ui-table-resizable-line-color: #a8c9f0;
+  --vxe-ui-table-resizable-drag-line-color: var(--demo-primary);
+}
+
+html[data-vxe-ui-theme='dark'] {
+  --vxe-ui-table-border-width: 1px;
+  --vxe-ui-table-border-color: #25313f;
+  --demo-table-border-outer: #33475f;
+
+  /* 表格底色与卡片对齐,避免卡片(#16181c)里嵌一块 #121212 的色块 */
+  --vxe-ui-layout-background-color: var(--demo-card-bg);
+
+  --vxe-ui-table-header-background-color: #1a2029;
+  --vxe-ui-table-header-font-color: rgba(255, 255, 255, 0.85);
+  --vxe-ui-table-footer-background-color: #1a2029;
+  --vxe-ui-table-footer-font-color: rgba(255, 255, 255, 0.85);
+
+  --vxe-ui-table-row-striped-background-color: rgba(255, 255, 255, 0.025);
+  --vxe-ui-table-row-hover-background-color: rgba(60, 138, 255, 0.12);
+  --vxe-ui-table-row-hover-striped-background-color: rgba(60, 138, 255, 0.12);
+  --vxe-ui-table-row-current-background-color: rgba(60, 138, 255, 0.18);
+  --vxe-ui-table-row-hover-current-background-color: rgba(60, 138, 255, 0.24);
+
+  --vxe-ui-table-resizable-line-color: #3d5470;
+  --vxe-ui-table-resizable-drag-line-color: var(--demo-primary);
+}
+
+/* 外框比内部分隔线略深一档:整体有轮廓,内部依旧轻 */
+.vxe-table--render-default .vxe-table--border-line {
+  border-color: var(--demo-table-border-outer);
+}
+
+/* 工具栏:默认 padding 是 .5em 0,按钮贴着表格,加大下边距留出呼吸 */
+.vxe-toolbar {
+  padding: 2px 0 12px;
+}
+
+/* 表头文字加粗,和表体拉开层次 */
+.vxe-table--render-default .vxe-header--column {
+  font-weight: 600;
 }
 
 /* ── 细节打磨:滚动条 ── */

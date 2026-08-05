@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { Button, Space } from 'antdv-next'
+import {
+  FileExcelOutlined, ExportOutlined, ImportOutlined, PrinterOutlined, UndoOutlined
+} from '@antdv-next/icons'
 import type { VxeGridInstance, VxeGridProps } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useAppStore } from '@/stores/app'
@@ -126,12 +129,27 @@ function resetCustom() {
     <div class="page-card fill-card">
       <vxe-grid ref="gridRef" v-bind="gridOptions" :size="appStore.tableSize">
         <template #toolbar_buttons>
-          <Space>
-            <Button size="small" @click="exportCsv">快捷导出 CSV</Button>
-            <Button size="small" @click="openExportModal">高级导出</Button>
-            <Button size="small" @click="openImportModal">导入</Button>
-            <Button size="small" @click="doPrint">打印</Button>
-            <Button size="small" @click="resetCustom">重置列设置</Button>
+          <Space :size="8">
+            <Button type="primary" @click="exportCsv">
+              <template #icon><FileExcelOutlined /></template>
+              快捷导出 CSV
+            </Button>
+            <Button @click="openExportModal">
+              <template #icon><ExportOutlined /></template>
+              高级导出
+            </Button>
+            <Button @click="openImportModal">
+              <template #icon><ImportOutlined /></template>
+              导入
+            </Button>
+            <Button @click="doPrint">
+              <template #icon><PrinterOutlined /></template>
+              打印
+            </Button>
+            <Button danger @click="resetCustom">
+              <template #icon><UndoOutlined /></template>
+              重置列设置
+            </Button>
           </Space>
         </template>
       </vxe-grid>

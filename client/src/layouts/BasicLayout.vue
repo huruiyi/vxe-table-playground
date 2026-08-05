@@ -3,7 +3,7 @@ import { computed, h } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   Layout, LayoutSider, LayoutHeader, LayoutContent,
-  Menu, Space, Switch, Segmented, TypographyText
+  Menu, Space, Switch, Segmented, Select, Tag, Tooltip, TypographyText
 } from 'antdv-next'
 import {
   HomeOutlined, TableOutlined, SearchOutlined, FormOutlined, EditOutlined,
@@ -12,6 +12,7 @@ import {
   MenuFoldOutlined, MenuUnfoldOutlined
 } from '@antdv-next/icons'
 import { useAppStore, type TableSize } from '@/stores/app'
+import { FONT_OPTIONS, stackOf } from '@/data/fonts'
 import { demoRoutes } from '@/router'
 
 const route = useRoute()
@@ -57,6 +58,13 @@ function onSizeChange(val: string | number) {
   appStore.setTableSize(val as TableSize)
 }
 
+// 下拉项用各自的字体渲染:本机没装的那一项看着仍是系统字体,一眼能分辨
+const fontOptions = FONT_OPTIONS.map((f) => ({
+  value: f.key,
+  label: f.label,
+  stack: stackOf(f)
+}))
+
 const pageTitle = computed(() => (route.meta?.title as string) || '')
 </script>
 
@@ -95,6 +103,26 @@ const pageTitle = computed(() => (route.meta?.title as string) || '')
           <TypographyText strong class="page-title">{{ pageTitle }}</TypographyText>
         </Space>
         <Space :size="20">
+          <span class="header-field">
+            <span class="header-label">字体</span>
+            <Select
+              :value="appStore.fontKey"
+              :options="fontOptions"
+              style="width: 130px"
+              :popup-match-select-width="260"
+              @change="(val: any) => appStore.setFont(String(val))"
+            >
+              <template #optionRender="{ option }">
+                <div class="font-option" :style="{ fontFamily: (option as any).stack }">
+                  <span class="font-option-name">{{ option.label }}</span>
+                  <span class="font-option-sample">永和九年岁在癸丑 Agy 0123</span>
+                </div>
+              </template>
+            </Select>
+            <Tooltip v-if="!appStore.fontAvailable" title="浏览器没找到这款字体。刚装完系统字体的话,需要完全退出浏览器再打开——字体列表是进程启动时缓存的,刷新页面不会重新读取。">
+              <Tag color="warning">未安装</Tag>
+            </Tooltip>
+          </span>
           <span class="header-field">
             <span class="header-label">表格尺寸</span>
             <Segmented :value="appStore.tableSize" :options="sizeOptions" @change="onSizeChange" />
@@ -227,6 +255,25 @@ const pageTitle = computed(() => (route.meta?.title as string) || '')
   color: var(--demo-text-2);
   font-size: 13px;
 }
+
+/* 字体下拉:每项带一行中文样例,两款字体的差异一眼可比 */
+.font-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.3;
+  padding: 2px 0;
+}
+
+.font-option-name {
+  font-size: 14px;
+}
+
+.font-option-sample {
+  color: var(--demo-text-2);
+  font-size: 13px;
+}
+
 
 /* ── 内容区 ── */
 .layout-content {
