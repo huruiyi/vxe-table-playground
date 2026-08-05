@@ -1,0 +1,54 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-card {
+  background: var(--demo-card-bg, #fff);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* 暗色主题:VxeUI.setTheme('dark') 会在 html 上打 data-vxe-ui-theme="dark" */
+html[data-vxe-ui-theme='dark'] {
+  --demo-card-bg: #141414;
+}
+
+.demo-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* 填充布局:表格撑满剩余高度,分页条固定在底部 */
+.page-fill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-card.fill-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.fill-card > .vxe-grid,
+.fill-card > .vxe-table {
+  flex: 1;
+  min-height: 0;
+}
+
+/* 表格独立自适应容器(卡片内有工具栏等兄弟元素时使用) */
+.table-wrap {
+  flex: 1;
+  min-height: 0;
+}
