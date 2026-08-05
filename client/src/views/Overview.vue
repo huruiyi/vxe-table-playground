@@ -48,7 +48,7 @@ function goto(path: string) {
 
 <style scoped>
 .overview-hero {
-  padding: 8px 4px 20px;
+  padding: 4px 4px 20px;
 }
 
 .overview-grid {
@@ -61,6 +61,21 @@ function goto(path: string) {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  border-radius: 12px;
+  border-color: var(--demo-border);
+  box-shadow: var(--demo-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--demo-shadow-hover);
+  border-color: var(--demo-primary);
+}
+
+.overview-card:hover .card-icon {
+  background: var(--demo-primary);
+  color: #fff;
 }
 
 .overview-card :deep(.ant-card-body) {
@@ -83,19 +98,21 @@ function goto(path: string) {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
-  background: #e6f4ff;
-  color: #1677ff;
+  border-radius: 10px;
+  background: var(--demo-primary-soft);
+  color: var(--demo-primary);
   font-size: 18px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .card-title {
   font-size: 16px;
   font-weight: 600;
+  color: var(--demo-text-1);
 }
 
 .card-desc {
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--demo-text-2);
   font-size: 13px;
   line-height: 1.7;
   flex: 1;

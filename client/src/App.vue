@@ -8,7 +8,12 @@ import BasicLayout from '@/layouts/BasicLayout.vue'
 const appStore = useAppStore()
 
 const themeConfig = computed(() => ({
-  algorithm: appStore.dark ? theme.darkAlgorithm : theme.defaultAlgorithm
+  algorithm: appStore.dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  token: {
+    colorPrimary: '#1677ff',
+    borderRadius: 8,
+    colorBgLayout: appStore.dark ? '#0d0d0f' : '#f4f6fa'
+  }
 }))
 </script>
 

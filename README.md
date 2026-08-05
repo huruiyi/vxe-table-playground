@@ -1,15 +1,15 @@
 # vxe-table-playground
 
-vxe-table v4 全功能演示项目:11 个可交互示例页,覆盖分页、排序、筛选、CRUD、可编辑、树形、10 万行虚拟滚动、导入导出、拖拽、右键菜单、合计合并等场景。前后端完整可跑——接口是真实的服务端分页/排序/事务,不是纯前端 mock。
+本项目目前的核心目的是**演示 vxe-table v4 的功能**:一个功能总览页 + 11 个可交互示例页,覆盖分页、排序、筛选、CRUD、可编辑、树形、10 万行虚拟滚动、导入导出、拖拽、右键菜单、合计合并等场景。前后端完整可跑——接口是真实的服务端分页/排序/事务,不是纯前端 mock。
 
-**技术栈**:Vite 8 · Vue 3.5 · TypeScript · antdv-next 1.4 · vxe-table 4.20 · Express 5 · Prisma 6 · MySQL
+**技术栈**:Vite 8 · Vue 3.5 · TypeScript · Vue Router 5 · Pinia 4 · antdv-next 1.4 · vxe-table 4.20 / vxe-pc-ui 4.16 · Express 5 · Prisma 6 · MySQL
 
 ## 快速开始
 
 ### 前置要求
 
 - Node.js ≥ 20
-- 本地可用的 MySQL
+- 本地可用的 MySQL(本项目开发使用的账号:用户 `root`,密码 `fairy-vip`,按你本机情况修改即可)
 
 ### 配置与启动
 
@@ -27,7 +27,14 @@ cp server/.env.example server/.env
 npm run dev
 ```
 
-- 前端:http://localhost:5173(vite proxy 将 `/api` 转发到后端)
+`server/.env` 示例(库名任意,不存在会自动创建):
+
+```ini
+PORT=3000
+DATABASE_URL="mysql://root:fairy-vip@localhost:3306/vxe_demo"
+```
+
+- 前端:http://localhost:5173(vite proxy 将 `/api` 转发到后端),打开后默认进入 `/overview` 功能总览
 - 后端:http://localhost:3000
 
 无需手动执行 SQL:后端启动脚本会先跑 `prisma db push` 自动建库建表(schema 见 [server/prisma/schema.prisma](server/prisma/schema.prisma)),表为空时自动写入种子数据(200 个用户 + 一棵部门树)。可用 `npm --prefix server run db:studio` 打开 Prisma Studio 查看数据。
@@ -36,6 +43,7 @@ npm run dev
 
 | 路由 | 内容 |
 |---|---|
+| `/overview` | 功能总览:卡片式导航,列出每个演示页的场景与涉及的 vxe-table 特性(`/` 默认重定向到这里) |
 | `/basic` | 基础表格:边框/斑马纹、固定表头与左右固定列、多级表头、单元格合并、插槽渲染(Tag/进度条)、空数据态 |
 | `/query` | vxe-grid `proxy-config` 对接后端:服务端分页、远程排序、列头远程筛选,查询条件存 Pinia |
 | `/crud` | 完整增删改查:antdv-next Modal + Form 弹窗、Popconfirm 删除、批量删除(事务) |
@@ -56,8 +64,11 @@ npm run dev
 ├── client/                 # 前端 Vite + Vue 3
 │   └── src/
 │       ├── api/            # axios 封装与接口(统一解包 {code,msg,data})
+│       ├── data/           # 总览页的演示元信息(标题/描述/特性标签)
 │       ├── layouts/        # 侧边栏 + 头部布局
-│       ├── views/          # 11 个演示页,一页一个场景
+│       ├── plugins/        # vxe-table / vxe-pc-ui 注册与 xlsx 导出插件
+│       ├── router/         # 路由表(总览页 + 11 个演示页)
+│       ├── views/          # 总览页 + 11 个演示页,一页一个场景
 │       ├── stores/         # Pinia(全局尺寸/主题、查询条件)
 │       └── styles/         # 填充布局与暗色主题变量
 ├── server/                 # 后端 Express + Prisma
@@ -87,6 +98,16 @@ npm run dev
 - **列宽自适应**:除勾选/序号列用固定 `width`,其余列用 `minWidth`,剩余宽度由 vxe 按比例分配;配合 `showOverflow: 'tooltip'` 防止内容撑行。
 - **antd 控件 `@change` 里拿不到新值**:change 事件先于 `v-model` 写值触发,需要重新加载数据时用 `watch` 监听 ref 而不是在 `@change` 里调用。
 - **暗色主题三方联动**:antd 用 `theme.darkAlgorithm`,vxe 用 `VxeUI.setTheme('dark')`(会在 html 上打 `data-vxe-ui-theme` 属性),自定义样式挂这个属性写 CSS 变量即可跟随切换。
+
+## 参考文档
+
+| 技术 | 文档 |
+|---|---|
+| vxe-table v4(本项目主角) | https://vxetable.cn/#/start/useTable/install |
+| antdv-next | https://www.antdv-next.cn/index-cn |
+| Vue Router | https://router.vuejs.org/zh/ |
+| Pinia | https://pinia.vuejs.org/zh/ |
+| Vite + Vue + TS 脚手架 | https://vite.new/vue-ts |
 
 ## License
 
