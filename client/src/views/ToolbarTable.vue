@@ -3,6 +3,9 @@ import { reactive, ref } from 'vue'
 import { Button, Space } from 'antdv-next'
 import type { VxeGridInstance, VxeGridProps } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const gridRef = ref<VxeGridInstance<UserRow>>()
 
@@ -121,7 +124,7 @@ function resetCustom() {
 <template>
   <div class="page-fill">
     <div class="page-card fill-card">
-      <vxe-grid ref="gridRef" v-bind="gridOptions">
+      <vxe-grid ref="gridRef" v-bind="gridOptions" :size="appStore.tableSize">
         <template #toolbar_buttons>
           <Space>
             <Button size="small" @click="exportCsv">快捷导出 CSV</Button>

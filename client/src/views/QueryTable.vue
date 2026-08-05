@@ -4,6 +4,9 @@ import { Form, FormItem, Input, Select, Button, Space } from 'antdv-next'
 import type { VxeGridInstance, VxeGridProps } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
 import { useDemoStore } from '@/stores/demo'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const demoStore = useDemoStore()
 const gridRef = ref<VxeGridInstance<UserRow>>()
@@ -137,7 +140,7 @@ function handleReset() {
       </Form>
     </div>
     <div class="page-card fill-card">
-      <vxe-grid ref="gridRef" v-bind="gridOptions" />
+      <vxe-grid ref="gridRef" v-bind="gridOptions" :size="appStore.tableSize" />
     </div>
   </div>
 </template>

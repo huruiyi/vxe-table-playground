@@ -8,6 +8,9 @@ import type { FormInstance } from 'antdv-next'
 import dayjs, { Dayjs } from 'dayjs'
 import type { VxeGridInstance, VxeGridProps } from 'vxe-table'
 import { fetchUsers, createUser, updateUser, deleteUser, batchSaveUsers, type UserRow } from '@/api/user'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const gridRef = ref<VxeGridInstance<UserRow>>()
 const roleOptions = ['前端', '后端', '测试', '产品', '设计'].map((v) => ({ label: v, value: v }))
@@ -180,7 +183,7 @@ async function handleBatchDelete() {
         </Space>
       </div>
       <div class="table-wrap">
-      <vxe-grid ref="gridRef" v-bind="gridOptions">
+      <vxe-grid ref="gridRef" v-bind="gridOptions" :size="appStore.tableSize">
         <template #status_cell="{ row }">
           <Tag :color="row.status === 1 ? 'success' : 'error'">
             {{ row.status === 1 ? '启用' : '禁用' }}

@@ -3,6 +3,9 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { Button, Space, RadioGroup, Tag, message } from 'antdv-next'
 import type { VxeTableInstance, VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, batchSaveUsers, type UserRow } from '@/api/user'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const tableRef = ref<VxeTableInstance<UserRow>>()
 const loading = ref(false)
@@ -130,6 +133,7 @@ onMounted(loadData)
       <div class="table-wrap">
       <vxe-table
         ref="tableRef"
+        :size="appStore.tableSize"
         :data="tableData"
         :loading="loading"
         :edit-config="editConfig"

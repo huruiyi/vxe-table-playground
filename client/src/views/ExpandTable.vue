@@ -3,6 +3,9 @@ import { computed, onMounted, ref } from 'vue'
 import { Button, Space, Switch, Descriptions, DescriptionsItem, Tag } from 'antdv-next'
 import type { VxeTableInstance, VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, type UserRow } from '@/api/user'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const tableRef = ref<VxeTableInstance<UserRow>>()
 const loading = ref(false)
@@ -49,6 +52,7 @@ onMounted(loadData)
       <div class="table-wrap">
       <vxe-table
         ref="tableRef"
+        :size="appStore.tableSize"
         :data="tableData"
         :loading="loading"
         :expand-config="expandConfig"

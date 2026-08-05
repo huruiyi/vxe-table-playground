@@ -3,6 +3,9 @@ import { onMounted, reactive, ref } from 'vue'
 import { message } from 'antdv-next'
 import type { VxeTableEvents, VxeTableInstance, VxeTablePropTypes } from 'vxe-table'
 import { fetchUsers, deleteUser, type UserRow } from '@/api/user'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const tableRef = ref<VxeTableInstance<UserRow>>()
 const loading = ref(false)
@@ -89,6 +92,7 @@ onMounted(loadData)
     <div class="page-card fill-card">
       <vxe-table
         ref="tableRef"
+        :size="appStore.tableSize"
         :data="tableData"
         :loading="loading"
         :menu-config="menuConfig"

@@ -3,6 +3,9 @@ import { onMounted, ref, watch } from 'vue'
 import { RadioGroup, Switch, Tag } from 'antdv-next'
 import type { VxeTablePropTypes } from 'vxe-table'
 import { fetchBigData, type BigRow } from '@/api/bigdata'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const loading = ref(false)
 const tableData = ref<BigRow[]>([])
@@ -79,6 +82,7 @@ onMounted(loadData)
       </div>
       <div class="table-wrap">
         <vxe-table
+          :size="appStore.tableSize"
           :data="tableData"
           :loading="loading"
           :scroll-y="scrollY"

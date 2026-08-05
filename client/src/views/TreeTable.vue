@@ -3,6 +3,9 @@ import { onMounted, ref } from 'vue'
 import { Button, Space, TypographyText } from 'antdv-next'
 import type { VxeTableInstance } from 'vxe-table'
 import { fetchDeptTree, fetchDeptChildren, type DeptRow } from '@/api/dept'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 // ---------- 表一:扁平数据 transform 自动转树 + 树内编辑 ----------
 const flatTableRef = ref<VxeTableInstance<DeptRow>>()
@@ -63,6 +66,7 @@ onMounted(() => {
       <div class="table-wrap">
       <vxe-table
         ref="flatTableRef"
+        :size="appStore.tableSize"
         :data="flatData"
         :loading="flatLoading"
         :tree-config="{ transform: true, rowField: 'id', parentField: 'parent_id', expandAll: true }"
@@ -87,6 +91,7 @@ onMounted(() => {
       </div>
       <div class="table-wrap">
       <vxe-table
+        :size="appStore.tableSize"
         :data="lazyData"
         :loading="lazyLoading"
         :tree-config="{ lazy: true, childrenField: 'children', hasChildField: 'hasChild', loadMethod: loadChildren }"
