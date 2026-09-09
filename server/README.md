@@ -58,6 +58,7 @@ DATABASE_URL="mysql://root:fairy-vip@localhost:3306/vxe_demo"
 
 - `DATABASE_URL` 是唯一必需项,格式为 `mysql://用户名:密码@主机:端口/库名`,库名不存在时会由 `db:push` 自动创建。
 - 此文件**已加入 `.gitignore`,不提交**。
+- 模板见 `server/.env.example`(占位值,可复制为 `.env` 后填入真实配置)。
 
 ### 2. `server/prisma.config.ts` —— Prisma CLI 配置(Prisma 7 标配)
 

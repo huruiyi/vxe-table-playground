@@ -21,6 +21,7 @@ npm --prefix client install
 
 # 2. 配置数据库连接
 # 在 server/ 下新建 .env,把 DATABASE_URL 改成你的 MySQL 连接串
+# 可参考 server/.env.example(填占位值,不含真实密码)
 
 # 3. 一键启动前后端
 npm run dev
