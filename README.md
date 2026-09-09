@@ -2,7 +2,7 @@
 
 本项目目前的核心目的是**演示 vxe-table v4 的功能**:一个功能总览页 + 11 个可交互示例页,覆盖分页、排序、筛选、CRUD、可编辑、树形、10 万行虚拟滚动、导入导出、拖拽、右键菜单、合计合并等场景。前后端完整可跑——接口是真实的服务端分页/排序/事务,不是纯前端 mock。
 
-**技术栈**:Vite 8 · Vue 3.5 · TypeScript · Vue Router 5 · Pinia 4 · antdv-next 1.4 · vxe-table 4.20 / vxe-pc-ui 4.16 · Express 5 · Prisma 6 · MySQL
+**技术栈**:Vite 8 · Vue 3.5 · TypeScript · Vue Router 5 · Pinia 4 · antdv-next 1.4 · vxe-table 4.20 / vxe-pc-ui 4.16 · Express 5 · Prisma 7 · MySQL
 
 ## 快速开始
 
@@ -36,7 +36,9 @@ DATABASE_URL="mysql://root:fairy-vip@localhost:3306/vxe_demo"
 - 前端:http://localhost:5173(vite proxy 将 `/api` 转发到后端),打开后默认进入 `/overview` 功能总览
 - 后端:http://localhost:3000
 
-无需手动执行 SQL:后端启动脚本会先跑 `prisma db push` 自动建库建表(schema 见 [server/prisma/schema.prisma](server/prisma/schema.prisma)),表为空时自动写入种子数据(200 个用户 + 一棵部门树)。可用 `npm --prefix server run db:studio` 打开 Prisma Studio 查看数据。
+无需手动执行 SQL:后端使用 Prisma 7,首次需先执行 `npm --prefix server run generate` 生成 Prisma Client(生成到 `server/src/generated/prisma`,已忽略提交),再用 `npm --prefix server run db:push` 自动建库建表(schema 见 [server/prisma/schema.prisma](server/prisma/schema.prisma));表为空时后端启动会自动写入种子数据(200 个用户 + 一棵部门树)。可用 `npm --prefix server run db:studio` 打开 Prisma Studio 查看数据。
+
+> 各 Prisma 相关命令(`generate` / `db:push` / `db:seed` / `dev` / `db:studio` 等)的详细作用、配置文件说明与执行顺序,见 [server/README.md](server/README.md)。
 
 ## 演示页面
 

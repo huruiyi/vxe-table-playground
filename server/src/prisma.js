@@ -1,6 +1,9 @@
-const { PrismaClient } = require('@prisma/client')
+require('dotenv').config()
+const { PrismaMariaDb } = require('@prisma/adapter-mariadb')
+const { PrismaClient } = require('./generated/prisma/client')
 
-const prisma = new PrismaClient()
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL)
+const prisma = new PrismaClient({ adapter })
 
 const SURNAMES = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '许', '何']
 const GIVEN = ['伟', '芳', '娜', '敏', '静', '磊', '军', '洋', '勇', '艳', '杰', '娟', '涛', '明', '超', '秀兰', '霞', '平', '刚', '桂英']
