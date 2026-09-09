@@ -1,7 +1,0 @@
-node_modules/
-
-# 环境变量含数据库密码,只提交 .env.example
-.env
-
-logs/
-*.log

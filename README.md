@@ -20,8 +20,7 @@ npm --prefix server install
 npm --prefix client install
 
 # 2. 配置数据库连接
-cp server/.env.example server/.env
-# 编辑 server/.env,把 DATABASE_URL 改成你的 MySQL 连接串
+# 在 server/ 下新建 .env,把 DATABASE_URL 改成你的 MySQL 连接串
 
 # 3. 一键启动前后端
 npm run dev
