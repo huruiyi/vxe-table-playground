@@ -72,13 +72,14 @@ const pageTitle = computed(() => (route.meta?.title as string) || '')
   <Layout style="height: 100%">
     <LayoutSider
       v-model:collapsed="appStore.collapsed"
+      :collapsed-width="48"
       collapsible
       :trigger="null"
       theme="light"
       :width="220"
       class="layout-sider"
     >
-      <div class="logo">
+      <div class="logo" :class="{ 'logo-collapsed': appStore.collapsed }">
         <span class="logo-mark">V</span>
         <span v-if="!appStore.collapsed" class="logo-text">vxe-table 演示</span>
       </div>
@@ -191,6 +192,12 @@ const pageTitle = computed(() => (route.meta?.title as string) || '')
   white-space: nowrap;
 }
 
+/* 折叠态整栏只有 48px:logo 必须去掉左右内边距,否则 30px 的方块会被 overflow 裁掉 */
+.logo-collapsed {
+  padding: 0;
+  justify-content: center;
+}
+
 .menu-scroll {
   flex: 1;
   min-height: 0;
@@ -209,6 +216,12 @@ const pageTitle = computed(() => (route.meta?.title as string) || '')
   margin-inline: 8px;
   width: calc(100% - 16px);
   border-radius: 10px;
+}
+
+/* 折叠态:菜单项原本 8px 的左右外边距会把 16px 图标挤出 48px 栏宽,这里收窄到 6px */
+.menu-scroll :deep(.ant-menu-inline-collapsed .ant-menu-item) {
+  margin-inline: 6px;
+  width: calc(100% - 12px);
 }
 
 .menu-scroll :deep(.ant-menu-item-selected) {
