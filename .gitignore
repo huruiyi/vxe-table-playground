@@ -6,7 +6,7 @@ dist/
 dist-ssr/
 
 # Prisma 生成客户端(运行 npx prisma generate 重新生成)
-server/src/generated/
+server-prisma*/src/generated/
 
 # 日志
 logs/
