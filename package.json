@@ -4,6 +4,7 @@
   "private": true,
   "description": "vxe-table v4 演示:Vite + Vue3 + antdv-next + Express + MySQL",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "concurrently -n server,client -c blue,green \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
     "dev:server": "npm --prefix server run dev",
     "dev:client": "npm --prefix client run dev",

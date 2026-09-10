@@ -2,37 +2,83 @@
 
 本项目目前的核心目的是**演示 vxe-table v4 的功能**:一个功能总览页 + 11 个可交互示例页,覆盖分页、排序、筛选、CRUD、可编辑、树形、10 万行虚拟滚动、导入导出、拖拽、右键菜单、合计合并等场景。前后端完整可跑——接口是真实的服务端分页/排序/事务,不是纯前端 mock。
 
-**技术栈**:Vite 8 · Vue 3.5 · TypeScript · Vue Router 5 · Pinia 4 · antdv-next 1.4 · vxe-table 4.20 / vxe-pc-ui 4.16 · Express 5 · Prisma 6 / Prisma 7(两套后端) · MySQL
+**技术栈**:Vite 8 · Vue 3.5 · TypeScript · Vue Router 5 · Pinia 4 · antdv-next 1.4 · vxe-table 4.20 / vxe-pc-ui 4.16 · Express 5 · Prisma 6 / Prisma 7(两套后端) · MySQL · pnpm workspace
 
 ## 快速开始
 
 ### 前置要求
 
 - Node.js ≥ 20
+- **pnpm**(本项目统一使用 pnpm,见下文「依赖管理:pnpm workspace」)
 - 本地可用的 MySQL(本项目开发使用的账号:用户 `root`,密码 `fairy-vip`,按你本机情况修改即可)
+
+### 依赖管理:pnpm workspace
+
+本项目**统一使用 pnpm**,根目录的 `pnpm-workspace.yaml` 声明了三个子包:
+
+```yaml
+packages:
+  - client
+  - server-prisma6
+  - server-prisma7
+```
+
+同时四个 `package.json`(根 + 三个子包)都带有 `"preinstall": "npx only-allow pnpm"`,因此用 `npm install` / `yarn` 安装会**直接被拦截报错**——请勿再生成 `package-lock.json`。
+
+```bash
+# 安装全部依赖:在根目录执行一次即可,workspace 会一并处理三个子包
+pnpm install
+```
+
+#### 从 npm 切换过来:清理后重装
+
+如果你之前用 npm 装过依赖(或刚从旧版本的目录结构切换过来),**必须清理后重装**:workspace 会把依赖统一提升到根 `node_modules`,旧的子包 `node_modules` 不删掉会出现两份依赖、版本错乱。
+
+```powershell
+# 根目录执行
+Remove-Item -Recurse -Force node_modules, client\node_modules, server-prisma6\node_modules, server-prisma7\node_modules -ErrorAction SilentlyContinue
+Remove-Item server-prisma7\pnpm-lock.yaml -ErrorAction SilentlyContinue
+pnpm install
+# Prisma client 需重新生成
+pnpm --filter server-prisma6 run generate
+pnpm --filter server-prisma7 run generate
+```
+
+#### 常用命令对照
+
+| 用途 | 原 npm 写法 | pnpm 写法 |
+|---|---|---|
+| 安装全部依赖(根目录) | `npm install` | `pnpm install` |
+| 只安装某个子包 | `npm --prefix client install` | `pnpm install --filter client` |
+| 运行子包脚本 | `npm --prefix server-prisma7 run dev` | `pnpm --filter server-prisma7 run dev` |
+| 在子包目录执行命令 | `cd client && ...` | `pnpm -C client ...` |
+| 新增依赖 | `npm --prefix client i axios` | `pnpm --filter client add axios` |
+| 新增开发依赖 | `npm --prefix client i -D vite` | `pnpm --filter client add -D vite` |
+| 删除依赖 | `npm --prefix client rm axios` | `pnpm --filter client remove axios` |
+| 执行子包内的 cli | `npm --prefix server-prisma7 exec prisma x` | `pnpm --filter server-prisma7 exec prisma x` |
+
+> 下文「后端命令总览」「Prisma CLI 命令参考」等章节为便于阅读,仍以 `npm --prefix ...` 形式举例;脚本名完全相同,按上表换成 pnpm 写法即可。
 
 ### 配置与启动
 
 后端刻意保留了两套实现:**`server-prisma6/`(Prisma 6)** 与 **`server-prisma7/`(Prisma 7)**,目录名即版本号。两套的业务代码完全一致,只有 Prisma Client 的引入与实例化方式不同(见下文「两套后端」)。**任选一套启动即可**,默认都监听 3000 端口,因此不要同时启动两套。
 
 ```bash
-# 1. 安装依赖(根目录 + 前端 + 选定的后端)
-npm install
-npm --prefix client install
-npm --prefix server-prisma7 install     # 或 server-prisma6
+# 1. 安装依赖(根目录执行一次,workspace 会处理三个子包;此前用 npm 装过请先看上节的清理重装)
+pnpm install
 
 # 2. 配置数据库连接
 # 各后端目录下已有 .env,把 DATABASE_URL 改成你的 MySQL 连接串即可
 
 # 3. 生成 Prisma Client(Prisma 7 必须显式执行,不再随 db push 自动生成)
-npm --prefix server-prisma7 run generate
+pnpm --filter server-prisma7 run generate
 
 # 4. 建库建表
-npm --prefix server-prisma7 run db:push
+pnpm --filter server-prisma7 run db:push
 
 # 5. 启动(两个终端分别执行)
-npm --prefix server-prisma7 run dev     # 后端
-npm --prefix client run dev             # 前端
+pnpm --filter server-prisma7 run dev     # 后端
+pnpm --filter client run dev             # 前端
 ```
 
 两个后端的 `.env` 使用**同一个连接串**(库名任意,不存在会自动创建),切换后端时无需改库、也无需重新灌数据:
@@ -131,7 +177,8 @@ DATABASE_URL="mysql://root:fairy-vip@localhost:3306/vxe-table-playground"
 │       ├── prisma.js           # 驱动适配器 + 生成的客户端
 │       ├── routes/             # 同上
 │       └── utils/
-└── package.json                # concurrently 一键启动前后端
+├── package.json                # concurrently 一键启动前后端
+└── pnpm-workspace.yaml         # workspace 声明(client / server-prisma6 / server-prisma7)
 ```
 
 ## 后端接口
